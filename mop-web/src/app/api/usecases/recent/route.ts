@@ -34,12 +34,17 @@ export async function GET() {
     // Flatten usecase_tags → tags for a cleaner response shape
     const usecases = (data ?? []).map(({ usecase_tags, ...rest }) => ({
       ...rest,
-      tags: usecase_tags
-        .map((row: { tags: { id: number; name: string; slug: string } | null }) => row.tags)
+      tags: (usecase_tags as unknown as Array<{ tags: { id: number; name: string; slug: string } | null }>)
+        .map((row) => row.tags)
         .filter(Boolean),
     }));
 
-    return NextResponse.json({ success: true, data: usecases });
+    return NextResponse.json({ success: true, data: usecases }, {
+      headers: {
+        // Cache for 60 seconds in browser, 300 seconds in CDN
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60',
+      }
+    });
   } catch (error) {
     console.error('[GET /api/usecases/recent] unexpected error:', error);
     return errorResponse('Internal server error', 500, 'INTERNAL_ERROR');

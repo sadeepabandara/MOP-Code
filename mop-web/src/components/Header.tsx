@@ -212,7 +212,7 @@ const Header = () => {
 			</div>
 		)}
 
-		<header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm dark:bg-gray-900 dark:border-gray-700">
+		<header style={{ "--header-height": "64px" } as React.CSSProperties} className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm dark:bg-gray-900 dark:border-gray-700">
 			<link
 				href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
 				rel="stylesheet"

@@ -73,13 +73,4 @@ interface SpeechRecognitionEvent {
     webkitSpeechRecognition: typeof webkitSpeechRecognition;
   }
 
-// CSS and SCSS module declarations
-declare module "*.css";
-declare module "*.scss";
-declare module "*.sass";
-declare module "*.module.css";
-declare module "*.module.scss";
-declare module "*.module.sass";
-declare module "leaflet/dist/leaflet.css";
-
-  export {};
+export {};

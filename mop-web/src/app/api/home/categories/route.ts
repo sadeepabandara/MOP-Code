@@ -20,6 +20,11 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       data: data ?? [],
+    }, {
+      headers: {
+        // Cache for 60 seconds in browser, 300 seconds in CDN
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60',
+      }
     });
   } catch (error) {
     console.error('[GET /api/home/categories] unexpected error:', error);

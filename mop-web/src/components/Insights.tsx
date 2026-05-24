@@ -19,17 +19,33 @@ function toSlug(name: string): string {
   return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 }
 
-const Insights: React.FC = () => {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+type InsightsProps = {
+  initialCategories?: any[];
+};
+
+const Insights: React.FC<InsightsProps> = ({ initialCategories }) => {
+  const hasInitialCategories = initialCategories !== undefined;
+  const [categories, setCategories] = useState<any[]>(initialCategories ?? []);
+  const [loading, setLoading] = useState(!hasInitialCategories);
 
   useEffect(() => {
+    if (hasInitialCategories) return;
+
+    let isActive = true;
     fetch("/api/home/categories")
       .then((r) => r.json())
-      .then((json) => { if (json.success) setCategories(json.data || []); })
+      .then((json) => {
+        if (isActive && json.success) setCategories(json.data || []);
+      })
       .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => {
+        if (isActive) setLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [hasInitialCategories]);
 
   return (
     <section

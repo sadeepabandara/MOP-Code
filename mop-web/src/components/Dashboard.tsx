@@ -96,8 +96,8 @@ const style = `
    background images stay clipped via .hero-image-container */
 .hero-section {
   width: 100%;
-  height: 90vh;
-  min-height: 700px;
+  height: calc(100svh - var(--header-height, 64px));
+  min-height: calc(100svh - var(--header-height, 64px));
   overflow: visible;
   position: relative;
   z-index: 20;
@@ -591,7 +591,7 @@ button.search-result-item:focus-visible {
   /* Reduce min-height so the hero does not overflow short phone screens */
   .hero-section {
     min-height: 580px;
-    height: 100svh; /* svh = small viewport height, accounts for mobile browser chrome */
+    height: calc(100svh - var(--header-height, 64px)); /* subtract header height */
   }
 
   /* On narrow screens the side gradients waste too much width; simplify to
@@ -674,7 +674,7 @@ button.search-result-item:focus-visible {
 /* Dot indicator strip — rendered as a sibling to hero-content at z-index 4 */
 .hero-slider-dots {
   position: absolute;
-  bottom: 115px; /* ~45px clear gap above the scroll-indicator chevron (bottom:30px + 40px height) */
+  bottom: 100px; /* keep the dots clear of the search bar on desktop */
   left: 50%;
   transform: translateX(-50%);
   z-index: 4;
@@ -857,7 +857,17 @@ const HERO_SEARCH_MODES: { value: SEARCH_MODE; label: string }[] = [
 	{ value: SEARCH_MODE.TAG, label: "Tag" },
 ];
 
-const Dashboard = () => {
+type DashboardProps = {
+  initialRecentUseCases?: any[];
+  initialHomeCategories?: any[];
+};
+
+const Dashboard = ({
+  initialRecentUseCases,
+  initialHomeCategories,
+}: DashboardProps) => {
+  const hasInitialRecentUseCases = initialRecentUseCases !== undefined;
+  const hasInitialHomeCategories = initialHomeCategories !== undefined;
 
   //edits for use case studies
   const router = useRouter();
@@ -875,9 +885,13 @@ const Dashboard = () => {
 	const [category, setCategory] = useState<CATEGORY>(CATEGORY.ALL);
 	const [showSearchResults, setShowSearchResults] = useState(false);
 	const [isSearching, setIsSearching] = useState(false);
-	const [recentUseCases, setRecentUseCases] = useState<any[]>([]);
-	const [recentLoading, setRecentLoading] = useState(true);
-	const [homeCategories, setHomeCategories] = useState<any[]>([]);
+  const [recentUseCases, setRecentUseCases] = useState<any[]>(
+    initialRecentUseCases ?? [],
+  );
+  const [recentLoading, setRecentLoading] = useState(!hasInitialRecentUseCases);
+  const [homeCategories, setHomeCategories] = useState<any[]>(
+    initialHomeCategories ?? [],
+  );
 
 	// ── Hero slider state ────────────────────────────────────────────────────────
 	// currentSlide: index of the visible background image
@@ -948,19 +962,39 @@ const Dashboard = () => {
 	}, [searchTerm, searchMode]);
 
 	useEffect(() => {
-		fetch("/api/usecases/recent")
-			.then((r) => r.json())
-			.then((json) => { if (json.success) setRecentUseCases(json.data || []); })
-			.catch(() => {})
-			.finally(() => setRecentLoading(false));
-	}, []);
+    if (hasInitialRecentUseCases) return;
+
+    let isActive = true;
+    fetch("/api/usecases/recent")
+      .then((r) => r.json())
+      .then((json) => {
+        if (isActive && json.success) setRecentUseCases(json.data || []);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (isActive) setRecentLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [hasInitialRecentUseCases]);
 
 	useEffect(() => {
-		fetch("/api/home/categories")
-			.then((r) => r.json())
-			.then((json) => { if (json.success) setHomeCategories(json.data || []); })
-			.catch(() => {});
-	}, []);
+    if (hasInitialHomeCategories) return;
+
+    let isActive = true;
+    fetch("/api/home/categories")
+      .then((r) => r.json())
+      .then((json) => {
+        if (isActive && json.success) setHomeCategories(json.data || []);
+      })
+      .catch(() => {});
+
+    return () => {
+      isActive = false;
+    };
+  }, [hasInitialHomeCategories]);
 
 	// Add click outside handler
 	useEffect(() => {

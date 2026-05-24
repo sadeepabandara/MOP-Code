@@ -1,7 +1,6 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import { locales } from "./i18n";
-import logger from "./utils/logger";
 
 
 // next-intl middleware instance (handles locale detection + redirects)
@@ -39,7 +38,7 @@ function getBarePath(pathname: string): string {
   return pathname;
 }
 
-// Return true when the request path is a protected page or API route. 
+// Return true when the request path is a protected page or API route.
 function isProtectedPath(pathname: string): boolean {
   const bare = getBarePath(pathname);
   return PROTECTED_PATHS.some((p) => bare === p || bare.startsWith(`${p}/`));
@@ -94,7 +93,7 @@ async function verifyJWT(
     const isValid = await crypto.subtle.verify(
       "HMAC",
       cryptoKey,
-      signature,
+      signature.buffer as ArrayBuffer,
       signingInput,
     );
     if (!isValid) return null;
@@ -117,25 +116,7 @@ async function verifyJWT(
 // Middleware entry point
 
 export default async function middleware(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl;
-  const method = request.method;
-  const userAgent = request.headers.get('user-agent') || 'unknown';
-  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
-
-  // Get user info from headers (set by previous middleware runs)
-  const userId = request.headers.get('x-user-id');
-  const userRole = request.headers.get('x-user-role');
-
-  // Log incoming request
-  logger.info(`Request: ${method} ${pathname}${searchParams.toString() ? '?' + searchParams.toString() : ''}`, {
-    source: 'middleware',
-    method,
-    url: `${pathname}${searchParams.toString() ? '?' + searchParams.toString() : ''}`,
-    ip_address: ip,
-    user_agent: userAgent,
-    user_id: userId ? parseInt(userId) : undefined,
-    user_role: userRole,
-  });
+  const { pathname } = request.nextUrl;
 
   // 1. Always-public paths: skip auth and delegate locale routing to intl
   if (isPublicPath(pathname)) {
@@ -212,21 +193,21 @@ export const config = {
     "/admin/:path*",
     "/upload/:path*",
     "/statistics/:path*",
-    
+
     // Protected API routes — profile
     "/api/profile",
     "/api/profile/:path*",
 
     // Protected API routes — category
-    "/api/categories",          
+    "/api/categories",
     "/api/categories/:path*",
 
     // Protected API routes — blogs
-    "/api/blogs",          
+    "/api/blogs",
     "/api/blogs/:path*",
 
     // Protected API routes — gallery
-    "/api/gallery",          
+    "/api/gallery",
     "/api/gallery/:path*",
     // Protected API routes — logs (admin only)
     "/api/logs",
@@ -234,5 +215,4 @@ export const config = {
     // Public auth API routes (handled by isPublicPath — pass straight through)
     "/api/auth/:path*",
   ],
-  runtime: 'nodejs',
 };
