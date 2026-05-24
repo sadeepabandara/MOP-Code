@@ -8,30 +8,30 @@ interface SpeechRecognitionEvent {
       };
     };
   }
-  
+
   interface SpeechRecognitionErrorEvent {
     error: string;
     message: string;
   }
-  
+
   interface SpeechRecognitionAlternative {
     readonly confidence: number;
     readonly transcript: string;
   }
-  
+
   interface SpeechRecognitionResult {
     readonly isFinal: boolean;
     readonly length: number;
     item(index: number): SpeechRecognitionAlternative;
     [index: number]: SpeechRecognitionAlternative;
   }
-  
+
   interface SpeechRecognitionResultList {
     readonly length: number;
     item(index: number): SpeechRecognitionResult;
     [index: number]: SpeechRecognitionResult;
   }
-  
+
   interface SpeechRecognition extends EventTarget {
     grammars: any;
     lang: string;
@@ -39,11 +39,11 @@ interface SpeechRecognitionEvent {
     interimResults: boolean;
     maxAlternatives: number;
     serviceURI: string;
-    
+
     start(): void;
     stop(): void;
     abort(): void;
-    
+
     onaudiostart: ((this: SpeechRecognition, ev: Event) => any) | null;
     onsoundstart: ((this: SpeechRecognition, ev: Event) => any) | null;
     onspeechstart: ((this: SpeechRecognition, ev: Event) => any) | null;
@@ -56,21 +56,30 @@ interface SpeechRecognitionEvent {
     onstart: ((this: SpeechRecognition, ev: Event) => any) | null;
     onend: ((this: SpeechRecognition, ev: Event) => any) | null;
   }
-  
+
   declare var SpeechRecognition: {
     prototype: SpeechRecognition;
     new(): SpeechRecognition;
   };
-  
+
   declare var webkitSpeechRecognition: {
     prototype: SpeechRecognition;
     new(): SpeechRecognition;
   };
-  
+
   // Extending the window interface
   interface Window {
     SpeechRecognition: typeof SpeechRecognition;
     webkitSpeechRecognition: typeof webkitSpeechRecognition;
   }
-  
+
+// CSS and SCSS module declarations
+declare module "*.css";
+declare module "*.scss";
+declare module "*.sass";
+declare module "*.module.css";
+declare module "*.module.scss";
+declare module "*.module.sass";
+declare module "leaflet/dist/leaflet.css";
+
   export {};

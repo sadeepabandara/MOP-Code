@@ -7,6 +7,8 @@ const nextConfig = {
   experimental: {
     forceSwcTransforms: true,
   },
+  // Compress responses for faster transfer
+  compress: true,
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -17,6 +19,9 @@ const nextConfig = {
   serverExternalPackages: ["@prisma/instrumentation"],
   outputFileTracingRoot: process.cwd(),
   images: {
+    // Cache images for 7 days for faster repeat loads
+    minimumCacheTTL: 604800,
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",

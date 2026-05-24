@@ -2,8 +2,8 @@
 
 'use client';
 import { useEffect } from 'react';
-import 'leaflet/dist/leaflet.css';
-import './safety.css';
+require('leaflet/dist/leaflet.css');
+require('./safety.css');
 
 export default function SafetyPage() {
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function SafetyPage() {
 
   return (
     <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-    
+
     <header className="page-title">Safety</header>
 
 
@@ -129,7 +129,7 @@ export default function SafetyPage() {
     </div>
     </section>
 
-      
+
     {/* Upload  */}
     <section className="section-gray-light">
     <div style={{ textAlign: 'center' }}>

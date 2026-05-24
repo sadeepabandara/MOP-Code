@@ -278,7 +278,7 @@ const style = `
   display: flex;
   gap: 0.5rem;
   padding: 0 1rem;
- 
+
 }
 .search-option {
   background: rgba(255, 255, 255, 0.2);
@@ -750,7 +750,7 @@ button.search-result-item:focus-visible {
   .our-vision-section {
      flex-direction: row;
     align-items: center;
-    
+
   }
 }
 .img-div {
@@ -1333,8 +1333,21 @@ const Dashboard = () => {
 
             {/* Recent use cases from backend */}
             {recentLoading ? (
-              <div className="flex justify-center py-10 mt-8">
-                <div className="loading-spinner" />
+              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="bg-white dark:bg-[#2f4048] rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col overflow-hidden animate-pulse">
+                    <div className="w-full h-40 bg-gray-200 dark:bg-gray-700" />
+                    <div className="p-5 flex flex-col gap-3">
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
+                      <div className="flex gap-2 mt-2">
+                        <div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 rounded-full" />
+                        <div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 rounded-full" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8">
@@ -1343,9 +1356,11 @@ const Dashboard = () => {
                     key={item.id}
                     className="bg-white dark:bg-[#2f4048] rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition flex flex-col group overflow-hidden"
                   >
-                    <img
+                    <Image
                       src={item.cover_img || "/img/biotech.jpeg"}
                       alt={item.title}
+                      width={400}
+                      height={160}
                       className="w-full h-40 object-cover group-hover:scale-[1.02] transition-transform"
                     />
                     <div className="p-5 flex flex-col flex-grow">

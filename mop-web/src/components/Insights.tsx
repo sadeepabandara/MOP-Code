@@ -49,8 +49,15 @@ const Insights: React.FC = () => {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-10">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-green-500 border-t-transparent" />
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="animate-pulse rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#2f4048] p-5 flex flex-col gap-3">
+              <div className="h-40 bg-gray-200 dark:bg-gray-700 rounded-xl" />
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+              <div className="h-5 w-20 bg-gray-200 dark:bg-gray-700 rounded-full" />
+            </div>
+          ))}
         </div>
       ) : categories.length === 0 ? (
         <div className="flex min-h-[200px] items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-6 py-12 text-center dark:border-gray-700 dark:bg-[#37474F]">
