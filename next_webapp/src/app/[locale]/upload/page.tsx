@@ -2,6 +2,7 @@
 
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useRef } from "react";
 import { TagsInput } from "react-tag-input-component";
@@ -252,7 +253,7 @@ const Upload = () => {
 						<div className="mt-8 bg-gray-100 dark:bg-[#1a1a1a] p-6 rounded-lg shadow-inner">
 							<div className="flex justify-between items-center mb-2">
 								<div className="flex items-center gap-2">
-									<img src="/img/document.png" alt="doc" className="h-6" />
+									<Image src="/img/document.png" alt="doc" width={24} height={24} className="h-6" />
 									<span>{selectedFileName}</span>
 								</div>
 								<span>{progress}%</span>

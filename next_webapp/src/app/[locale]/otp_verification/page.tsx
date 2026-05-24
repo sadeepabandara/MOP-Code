@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import '../../../../public/styles/otp_verification.css';
 
 const PasswordStrengthIndicator = ({ password }) => {
@@ -58,7 +59,7 @@ const OTPVerificationPage = () => {
       {/* Logo */}
       <div className="logo">
         {/* Add your logo here */}
-        <img src="/img/new-logo-green.png" alt="Chameleon Logo" className=" h-40" />
+        <Image src="/img/new-logo-green.png" alt="Chameleon Logo" width={160} height={160} className="h-40" />
       </div>
 
       <div className="text-center mt-4">

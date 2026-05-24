@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, use } from "react";
 import { Plus, X, Upload, Search, Pencil } from "lucide-react";
+import Image from "next/image";
 import AdminToast from "@/components/admin/AdminToast";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 
@@ -392,7 +393,7 @@ export default function GalleryPage({ params }: { params: Promise<{ locale: stri
 
             <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#1F8F50]/40 bg-[#E8F5EE] py-10 transition hover:border-[#1F8F50] hover:bg-[#D6EFE2]">
               {uploadPreview ? (
-                <img src={uploadPreview} alt="Preview" className="max-h-40 rounded-lg object-contain" />
+                <Image src={uploadPreview} alt="Preview" width={200} height={160} className="max-h-40 rounded-lg object-contain" />
               ) : (
                 <>
                   <Upload size={36} className="mb-3 text-[#1F8F50]" />

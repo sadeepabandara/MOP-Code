@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -7,7 +8,7 @@ export default function NotFound() {
         <div style={{ display: "flex", minHeight: "100vh", flexDirection: "column" }}>
           <header style={{ borderBottom: "1px solid #e5e7eb", padding: "12px 24px" }}>
             <Link href="/en">
-              <img src="/img/new-logo-green.png" alt="Melbourne Open Data" style={{ height: "60px" }} />
+              <Image src="/img/new-logo-green.png" alt="Melbourne Open Data" width={60} height={60} />
             </Link>
           </header>
           <main style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 16px", textAlign: "center" }}>

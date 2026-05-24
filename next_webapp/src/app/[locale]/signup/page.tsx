@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Link } from "@/i18n-navigation";
@@ -114,7 +115,7 @@ const SignUpPage = () => {
       <div className="relative z-10 w-full max-w-lg mx-4">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-10 sm:p-12">
           <div className="flex justify-center mb-6">
-            <img src="/img/new-logo-green.png" alt="Melbourne Open Data logo" className="h-16 w-auto" />
+            <Image src="/img/new-logo-green.png" alt="Melbourne Open Data logo" width={64} height={64} className="h-16 w-auto" />
           </div>
 
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-1">
